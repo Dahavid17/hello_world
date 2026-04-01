@@ -9,12 +9,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(title: const Text("Imagem SENAI")),
         body: Center(
-          child: Text(
-            'Hello Tom',
-            style: TextStyle(fontSize: 30),
+          child: Image(
+            image: AssetImage('assets/images/akirinha_mexicano.jpg')
           ),
         ),
       ),
