@@ -14,17 +14,17 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: const Text("Exemplo Row"),
         ),
-        body: Center( // <- tirei o const aqui
+        body: Center( 
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.home,size: 20),
 
-              SizedBox(width: 40), // <- adicionei um SizedBox para dar um espaçamento entre os itens
+              SizedBox(width: 40), 
 
               Icon(Icons.favorite,size: 20),
 
-              SizedBox(width: 40), // <- adicionei um SizedBox para dar um espaçamento entre os itens
+              SizedBox(width: 40), 
 
               Icon(Icons.settings,size: 20),
             ],
