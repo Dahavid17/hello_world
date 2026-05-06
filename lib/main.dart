@@ -1,179 +1,105 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const LoginApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class LoginApp extends StatelessWidget {
+  const LoginApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Carteira Digital",
-      home: const CarteiraDigital(),
+      home: LoginScreen(),
     );
   }
 }
 
-class CarteiraDigital extends StatelessWidget {
-  const CarteiraDigital({super.key});
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    double largura = MediaQuery.of(context).size.width;
+    double altura = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Carteira Digital"),
-        centerTitle: true,
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: const [
-          CartaoBanco(
-            corCartao: Colors.deepPurple,
-            banco: "Banco SESI",
-            numero: "1234 5678 9012 3456",
-            nome: "Davi Antonio",
-            validade: "12/30",
-            bandeira: "visa",
-          ),
-          SizedBox(height: 20),
+      body: SafeArea(
+        // SafeArea
+        child: SingleChildScrollView(
+          // Scroll (evita overflow)
+          child: Container(
+            width: largura,
+            constraints: BoxConstraints(minHeight: altura),
+            padding: EdgeInsets.symmetric(horizontal: largura * 0.08),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.account_circle,
+                  size: largura * 0.25,
+                  color: Colors.blue,
+                ),
 
-          CartaoBanco(
-            corCartao: Colors.blue,
-            banco: "Banco Digital",
-            numero: "9876 5432 1098 7654",
-            nome: "Davi Santos",
-            validade: "08/28",
-            bandeira: "mastercard",
-          ),
-          SizedBox(height: 20),
+                Text(
+                  "Login",
+                  style: TextStyle(
+                    fontSize: largura * 0.08,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
 
-          CartaoBanco(
-            corCartao: Colors.green,
-            banco: "Banco XPTO",
-            numero: "1111 2222 3333 4444",
-            nome: "Davi A. Santos",
-            validade: "05/27",
-            bandeira: "outro",
-          ),
-          SizedBox(height: 20),
+                SizedBox(height: altura * 0.05),
 
-          CartaoBanco(
-            corCartao: Colors.orange,
-            banco: "Banco Inter",
-            numero: "2222 3333 4444 5555",
-            nome: "Davi Santos",
-            validade: "09/29",
-            bandeira: "mastercard",
-          ),
-          SizedBox(height: 20),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: "Usuário",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
 
-          CartaoBanco(
-            corCartao: Colors.black,
-            banco: "Banco Premium",
-            numero: "9999 8888 7777 6666",
-            nome: "Davi A Santos",
-            validade: "03/31",
-            bandeira: "visa",
-          ),
-          SizedBox(height: 20),
-        ],
-      ),
-    );
-  }
-}
+                SizedBox(height: altura * 0.02),
 
-class CartaoBanco extends StatelessWidget {
-  final Color corCartao;
-  final String banco;
-  final String numero;
-  final String nome;
-  final String validade;
-  final String bandeira;
+                TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: "Senha",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
 
-  const CartaoBanco({
-    super.key,
-    required this.corCartao,
-    required this.banco,
-    required this.numero,
-    required this.nome,
-    required this.validade,
-    required this.bandeira,
-  });
+                SizedBox(height: altura * 0.04),
 
-  @override
-  Widget build(BuildContext context) {
-    // 🔥 imagem LOCAL (do PC/projeto)
-    Widget imagemBandeira;
+                //Botão
+                SizedBox(
+                  //pega a largura TODA da tela :D
+                  width: double.infinity,
+                  height: altura * 0.07,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Entrar",
+                      style: TextStyle(fontSize: largura * 0.045),
+                    ),
+                  ),
+                ),
 
-    if (bandeira == "visa") {
-      imagemBandeira = Image.asset(
-        'assets/images/visa.png',
-        width: 50,
-      );
-    } else if (bandeira == "mastercard") {
-      imagemBandeira = Image.asset(
-        'assets/images/mastercard.png',
-        width: 50,
-      );
-      }else {
-        imagemBandeira = const Icon(
-          Icons.credit_card,
-          color: Colors.white,
-        );
-      }
+                SizedBox(height: altura * 0.4),
 
-    return Container(
-      height: 200,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: corCartao,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black54,
-            blurRadius: 10,
-            offset: Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(banco, style: const TextStyle(color: Colors.white)),
-              const Spacer(),
-
-              imagemBandeira,
-
-              const Spacer(),
-              const Icon(Icons.contactless, size: 20, color: Colors.white),
-            ],
-          ),
-
-          const Icon(Icons.sim_card, size: 40, color: Colors.amber),
-
-          Text(
-            numero,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 22,
-              letterSpacing: 2,
+                Text(
+                  "Esqueceu a senha?",
+                  style: TextStyle(fontSize: largura * 0.035),
+                ),
+              ],
             ),
           ),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(nome, style: const TextStyle(color: Colors.white)),
-              Text(validade, style: const TextStyle(color: Colors.white)),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }

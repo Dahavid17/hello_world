@@ -56,10 +56,10 @@ class _ContadorTelaState extends State<ContadorTela> {
 
             ElevatedButton(
               onPressed: incrementar,
-              child: const Text('Curtir'),
               style : ElevatedButton.styleFrom(
 
               ),
+              child: const Text('Curtir'),
             ),
           ],
         ),
