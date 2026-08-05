@@ -30,4 +30,4 @@ class MeuApp extends StatelessWidget {
       ),
     );
   }
-}main
+}
