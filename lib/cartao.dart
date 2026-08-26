@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "Davi Antonio Santos",
+                              "Davi Antonio do Santos",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
