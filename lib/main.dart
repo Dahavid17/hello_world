@@ -12,7 +12,7 @@ class MeuApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Minha Localização',
+      title: 'Distância até minha casa',
       home: const LocalizacaoPage(),
     );
   }
@@ -26,19 +26,21 @@ class LocalizacaoPage extends StatefulWidget {
 }
 
 class _LocalizacaoPageState extends State<LocalizacaoPage> {
-  double latitude = 0;
-  double longitude = 0;
+  // 1. Substitua estas coordenadas pelas da sua casa real
+  final double casaLatitude = -21.3568364608751;
+  final double casaLongitude = -46.93302746441793;
 
-  Future<void> buscarLocalizacao() async {
+  String resultadoTexto = 'Clique no botão para calcular a distância.';
+
+  Future<void> calcularDistancia() async {
+    // Checagem e solicitação de permissões
     bool servicoAtivo = await Geolocator.isLocationServiceEnabled();
-
     if (!servicoAtivo) {
       await Geolocator.openLocationSettings();
       return;
     }
 
     LocationPermission permissao = await Geolocator.checkPermission();
-
     if (permissao == LocationPermission.denied) {
       permissao = await Geolocator.requestPermission();
     }
@@ -48,22 +50,33 @@ class _LocalizacaoPageState extends State<LocalizacaoPage> {
       return;
     }
 
-    Position posicao = await Geolocator.getCurrentPosition();
+    // Obtém a posição atual do GPS (Escola)
+    Position posicaoAtual = await Geolocator.getCurrentPosition();
 
+    // 2. Calcula a distância entre a localização atual e a casa (em metros)
+    double distanciaEmMetros = Geolocator.distanceBetween(
+      posicaoAtual.latitude,
+      posicaoAtual.longitude,
+      casaLatitude,
+      casaLongitude,
+    );
+
+    // 3. Formata e atualiza a mensagem na tela
     setState(() {
-      latitude = posicao.latitude;
-      longitude = posicao.longitude;
+      if (distanciaEmMetros >= 1000) {
+        double km = distanciaEmMetros / 1000;
+        resultadoTexto = 'Distância: ${km.toStringAsFixed(2)} km';
+      } else {
+        resultadoTexto = 'Distância: ${distanciaEmMetros.toStringAsFixed(0)} metros';
+      }
     });
-
-    print('Latitude: $latitude');
-    print('Longitude: $longitude');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Minha Localização'),
+        title: const Text('Distância até minha casa'),
       ),
       body: Center(
         child: Padding(
@@ -72,16 +85,19 @@ class _LocalizacaoPageState extends State<LocalizacaoPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // Ícone da casa
               const Icon(
-                Icons.location_on,
+                Icons.home,
                 size: 80,
                 color: Colors.blue,
               ),
 
               const SizedBox(height: 20),
 
+              // Título principal
               const Text(
-                'localizacao atual',
+                'Distância entre a escola e minha casa',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -90,23 +106,19 @@ class _LocalizacaoPageState extends State<LocalizacaoPage> {
 
               const SizedBox(height: 30),
 
+              // Exibição da instrução ou do resultado
               Text(
-                'Latitude: $latitude',
-                style: const TextStyle(fontSize: 18),
-              ),
-
-              const SizedBox(height: 10),
-
-              Text(
-                'Longitude: $longitude',
-                style: const TextStyle(fontSize: 18),
+                resultadoTexto,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 16),
               ),
 
               const SizedBox(height: 30),
 
+              // Botão para disparar a ação
               ElevatedButton(
-                onPressed: buscarLocalizacao,
-                child: const Text('AtualizarLocalização'),
+                onPressed: calcularDistancia,
+                child: const Text('Calcular distância'),
               ),
             ],
           ),
